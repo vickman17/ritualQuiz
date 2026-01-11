@@ -4,6 +4,8 @@ import { useParams, useHistory } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { io, Socket } from 'socket.io-client';
 
+const API_ORIGIN = import.meta.env.VITE_API_ORIGIN || 'http://localhost:5000';
+
 interface Question {
   id: number;
   question_text?: string;
@@ -34,7 +36,7 @@ const QuizGame: React.FC = () => {
 
   useEffect(() => {
     // Initialize Socket
-    const newSocket = io('http://localhost:5000');
+    const newSocket = io(API_ORIGIN);
     setSocket(newSocket);
 
     newSocket.emit('join_game', { roomId: id, userId: user?.id });
@@ -114,7 +116,7 @@ const QuizGame: React.FC = () => {
                           <img
                             src={(() => {
                               const raw = (question as any).image_url || (question as any).imageUrl;
-                              return typeof raw === 'string' && raw.startsWith('/uploads') ? `http://localhost:5000${raw}` : raw;
+                              return typeof raw === 'string' && raw.startsWith('/uploads') ? `${API_ORIGIN}${raw}` : raw;
                             })()}
                             alt="Question"
                             className="mb-3 max-h-60 object-contain border rounded"
@@ -152,7 +154,7 @@ const QuizGame: React.FC = () => {
                                   setSelectedOptionIndex(i);
                                   localStorage.setItem(`quiz_progress_${id}_${currentQuestionIndex}`, String(i));
                                   try {
-                                    fetch(`http://localhost:5000/api/answers/submit`, {
+                                    fetch(`${API_ORIGIN}/api/answers/submit`, {
                                       method: 'POST',
                                       headers: {
                                         'Content-Type': 'application/json',

@@ -3,6 +3,8 @@ import { IonCardTitle } from '@ionic/react';
 import { io, Socket } from 'socket.io-client';
 import ritualLogo from '@/assets/imgs/ritualLogoBg.png';
 
+const API_ORIGIN = import.meta.env.VITE_API_ORIGIN || 'http://localhost:5000';
+
 type Player = {
   userId: number;
   username: string;
@@ -26,7 +28,7 @@ const LeaderboardCarousel: React.FC<LeaderboardProps> = ({ overlay = true, posit
   const [socket, setSocket] = useState<Socket | null>(null);
 
   useEffect(() => {
-    const s = io('http://localhost:5000');
+    const s = io(API_ORIGIN);
     setSocket(s);
     s.emit('subscribe_global_leaderboard');
     s.on('global_leaderboard_snapshot', (payload: Player[]) => {

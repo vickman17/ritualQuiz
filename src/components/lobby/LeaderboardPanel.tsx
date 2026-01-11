@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonList, IonItem, IonLabel } from '@ionic/react';
 
+const API_ORIGIN = import.meta.env.VITE_API_ORIGIN || 'http://localhost:5000';
+
 const LeaderboardPanel = ({ roomId, token, currentUserId }: { roomId: string; token: string | null; currentUserId?: number }) => {
   const [rows, setRows] = useState<any[]>([]);
   useEffect(() => {
     const run = async () => {
       try {
-        const res = await fetch(`http://localhost:5000/api/answers/leaderboard/${roomId}`, {
+        const res = await fetch(`${API_ORIGIN}/api/answers/leaderboard/${roomId}`, {
           headers: token ? { 'Authorization': `Bearer ${token}` } : {}
         });
         const data = await res.json();

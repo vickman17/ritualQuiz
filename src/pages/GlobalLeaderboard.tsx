@@ -3,6 +3,8 @@ import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonCard, IonCardH
 import { useAuth } from '../context/AuthContext';
 import { io, Socket } from 'socket.io-client';
 
+const API_ORIGIN = import.meta.env.VITE_API_ORIGIN || 'http://localhost:5000';
+
 interface Row {
   userId: number;
   username: string;
@@ -20,7 +22,7 @@ const GlobalLeaderboard: React.FC = () => {
   const [socket, setSocket] = useState<Socket | null>(null);
 
   useEffect(() => {
-    const s = io('http://localhost:5000');
+    const s = io(API_ORIGIN);
     setSocket(s);
     s.emit('subscribe_global_leaderboard');
     s.on('global_leaderboard_snapshot', (payload: Row[]) => {
@@ -30,7 +32,7 @@ const GlobalLeaderboard: React.FC = () => {
     // initial fetch
     (async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/answers/leaderboard-global', {
+        const res = await fetch(`${API_ORIGIN}/api/answers/leaderboard-global`, {
           headers: token ? { 'Authorization': `Bearer ${token}` } : {}
         });
         const data = await res.json();

@@ -10,6 +10,8 @@ import { trash, add, pencil } from 'ionicons/icons';
 import { useParams, useHistory } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
+const API_ORIGIN = import.meta.env.VITE_API_ORIGIN || 'http://localhost:5000';
+
 interface Question {
   id: number;
   question_text: string;
@@ -55,7 +57,7 @@ const EditRoom: React.FC = () => {
 
   const fetchRoomDetails = async () => {
     try {
-      const res = await fetch(`http://localhost:5000/api/rooms/${id}`, {
+      const res = await fetch(`${API_ORIGIN}/api/rooms/${id}`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await res.json();

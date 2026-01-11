@@ -48,7 +48,7 @@ const PublicRoomSlider: React.FC<Props> = ({ rooms, isAuthenticated, onJoin, par
     };
   }, [rooms]);
 
-  const API_ORIGIN = 'http://localhost:5000';
+  const API_ORIGIN = import.meta.env.VITE_API_ORIGIN || 'http://localhost:5000';
   const styles = {
     rail: { display: 'flex', gap: 8, marginTop: 0, overflowX: 'auto' as const, paddingBottom: 0, paddingLeft: 8, paddingRight: 8, scrollSnapType: 'x mandatory' as any },
     cardWrap: { margin: 0, minWidth: '80%', height: 300, borderRadius: 30, scrollSnapAlign: 'center', transition: 'transform 300ms ease-out, opacity 300ms ease-out', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'cover', display: 'flex' },

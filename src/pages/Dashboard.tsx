@@ -9,6 +9,8 @@ import { useAuth } from '../context/AuthContext';
 import { useHistory } from 'react-router-dom';
 import { io, Socket } from 'socket.io-client';
 
+const API_ORIGIN = import.meta.env.VITE_API_ORIGIN || 'http://localhost:5000';
+
 interface Room {
   id: number;
   room_code: string;
@@ -44,7 +46,7 @@ const Dashboard: React.FC = () => {
   useEffect(() => {
     fetchMyRooms();
     fetchMyScore();
-    const s = io('http://localhost:5000');
+    const s = io(API_ORIGIN);
     setSocket(s);
     s.emit('subscribe_rooms');
     s.on('rooms_snapshot', (snapshot: any[]) => {
@@ -70,7 +72,7 @@ const Dashboard: React.FC = () => {
 
   const fetchMyRooms = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/rooms/my-rooms', {
+      const response = await fetch(`${API_ORIGIN}/api/rooms/my-rooms`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await response.json();
@@ -86,7 +88,7 @@ const Dashboard: React.FC = () => {
 
   const fetchMyScore = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/users/me/score', {
+      const res = await fetch(`${API_ORIGIN}/api/users/me/score`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await res.json();

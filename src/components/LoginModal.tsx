@@ -5,6 +5,8 @@ import { useHistory } from 'react-router-dom';
 import Ritual from '@/assets/imgs/ritualLogoBg.png';
 import RitualLogo from '@/assets/imgs/ritualLogoBg.png';
 
+const API_ORIGIN = import.meta.env.VITE_API_ORIGIN || 'http://localhost:5000';
+
 interface LoginModalProps {
   isOpen: boolean;
   onDidDismiss: () => void;
@@ -34,7 +36,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onDidDismiss }) => {
   const handleLogin = async () => {
     setLoading(true);
     try {
-      const response = await fetch('http://localhost:5000/api/auth/login', {
+      const response = await fetch(`${API_ORIGIN}/api/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),

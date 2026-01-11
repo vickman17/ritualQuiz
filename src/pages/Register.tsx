@@ -5,6 +5,8 @@ import { useHistory } from 'react-router-dom';
 import LoginModal from '@/components/LoginModal';
 import Ritual from '@/assets/imgs/ritualLogoBg.png';
 
+const API_ORIGIN = import.meta.env.VITE_API_ORIGIN || 'http://localhost:5000';
+
 const Register: React.FC = () => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
@@ -19,7 +21,7 @@ const Register: React.FC = () => {
   const handleRegister = async () => {
     setLoading(true);
     try {
-      const response = await fetch('http://localhost:5000/api/auth/register', {
+      const response = await fetch(`${API_ORIGIN}/api/auth/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, email, password, role }),
